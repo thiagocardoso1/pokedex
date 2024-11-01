@@ -1,0 +1,48 @@
+* {
+    font-family: Roboto, system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #eff0f1;
+}
+
+.content {
+    background-color: white;
+    padding: 1rem;
+
+    box-shadow: 3px 3px 13px 3px rgba(0, 0, 0, 0.219);
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    padding: 0.6rem;
+    text-align: center;
+}
+
+li {
+    text-transform: capitalize;
+}
+
+.pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination #loadMoreButton {
+    background-color: #55b1cf;
+    color: #ffffff;
+
+    border: none;
+    margin: 0.2rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.95rem;
+}
+
+.hidden {
+    display: none;
+}
