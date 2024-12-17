@@ -74,6 +74,7 @@
 .pokemon:hover {
     filter: brightness(1.1);
     transition: 0.4s;
+    cursor: pointer;
 }
 
 .pokemon .number {

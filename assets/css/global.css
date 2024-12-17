@@ -33,14 +33,23 @@ li {
 }
 
 .pagination #loadMoreButton {
-    background-color: #55b1cf;
+    background-color: #36a6f0;
     color: #ffffff;
+    text-transform: uppercase;
 
     border: none;
     margin: 0.2rem;
     padding: 0.5rem 0.5rem;
     border-radius: 1rem;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    transition: transform 0.3s ease-in-out;
+}
+
+.pagination #loadMoreButton:hover {
+    cursor: pointer;
+    transform: scale(1.1);
 }
 
 .hidden {
