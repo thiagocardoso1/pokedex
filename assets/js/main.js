@@ -8,8 +8,9 @@ const limit = 6;
 let offset = 0;
 let liMoreDetails;
 
-function loadPokemonItems(offset, limit) {
-    pokeApi.getPokemons(offset, limit).then((pokemonNames = []) => {
+async function loadPokemonItems(offset, limit) {
+    try {
+        const pokemonNames = await pokeApi.getPokemons(offset, limit);
         const newHtml = pokemonNames.map((pokemon) => {
             return `
                 <li id="${pokemon.number}" class="pokemon ${pokemon.type}">
@@ -23,17 +24,21 @@ function loadPokemonItems(offset, limit) {
                     <img src="${pokemon.photo}" alt="${pokemon.name}">
                 </div>
                 </li>
-                `
+                `;
         }).join('');
         pokemonOl.innerHTML += newHtml;
-
-    });
+    } catch {
+        console.error("Erro ao carregar Pokémon:", error);
+    }
 }
 
-function loadPokemonDetails(id) {
-    pokeApi.getPokemonStats(id).then((pokemonStats) => {
-        const newHtmlDetailsPoke =
-            `<div id="pokemonDetails" class="pokemon-stats ${pokemonStats.type}">
+async function loadPokemonDetails(id) {
+    try {
+        const pokemonStats = await pokeApi.getPokemonStats(id);
+
+        
+        const newHtmlDetailsPoke = `
+            <div id="pokemonDetails" class="pokemon-stats ${pokemonStats.type}">
             <span id="arrow_back" class="material-symbols-outlined">arrow_back</span>
                 <h1>${pokemonStats.namePokemon}</h1>
                 <img src="${pokemonStats.photo}" alt="${pokemonStats.statName}">
@@ -47,9 +52,12 @@ function loadPokemonDetails(id) {
                         `
             }).join('')}
                 </ul>
-            </div>`
+            </div>`;
         pokemonDetailsUl.innerHTML = newHtmlDetailsPoke;
-    })
+
+    } catch (error) {
+        console.error("Erro ao carregar detalhes do Pokémon:", error);
+    }
 }
 
 
@@ -93,13 +101,13 @@ const interval = setInterval(() => {
             backArrow.addEventListener('click', () => {
                 const pokemonOl = document.getElementById('pokemonContent');
                 pokemonOl.classList.remove('hidden');
-    
+
                 pokemonStats.classList.remove('stats');
                 pokemonStats.classList.add('hidden');
-    
+
                 liMoreDetails.classList.remove('moreDetails');
             })
         }
-        
+
     })
 }, 500);

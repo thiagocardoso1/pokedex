@@ -29,26 +29,33 @@ function getAllStatus(stats) {
     return pokemonStats;
 }
 
-pokeApi.getpokemonDetails = (pokemon) => {
-    return fetch(pokemon.url)
-        .then((response) => response.json())
-        .then(convertPokeApiDetailToPokemon)
+pokeApi.getpokemonDetails = async (pokemon) => {
+    try {
+        const response = await fetch(pokemon.url);
+        const pokemonDetail = await response.json();
+        return convertPokeApiDetailToPokemon(pokemonDetail);
+    } catch (error) {
+        console.error("Erro ao buscar os detalhes do Pokemon: ", error);
+    }
 }
 
-pokeApi.getPokemons = (offset, limit) => {
+pokeApi.getPokemons = async (offset, limit) => {
     const url = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`;
-    return fetch(url)
-        .then((response) => response.json())
-        .then((jsonBody) => jsonBody.results)
-        .then((pokemons) => pokemons.map((pokemon) => pokeApi.getpokemonDetails(pokemon)))
-        .then((detailRequest) => Promise.all(detailRequest))
-        .then((pokemonsDetail) => pokemonsDetail)
-        .catch((error) => console.error(error))
+    try {
+        const response = await fetch(url);
+        const jsonBody = await response.json();
+        const pokemons = jsonBody.results;
+        const detailRequest = pokemons.map((pokemon) => pokeApi.getpokemonDetails(pokemon));
+        const pokemonsDetail = await Promise.all(detailRequest);
+        return pokemonsDetail;
+    } catch (error) {
+        return console.error(error);
+    }
 }
 
-pokeApi.getPokemonStats = (id) => {
+pokeApi.getPokemonStats = async (id) => {
     const statsUrl = `https://pokeapi.co/api/v2/pokemon/${id}/`
-    return fetch(statsUrl)
-        .then((response) => response.json())
-        .then(getAllStatus)
+    const response = await fetch(statsUrl);
+    const stats = await response.json();
+    return getAllStatus(stats);
 }
